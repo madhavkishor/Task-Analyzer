@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Task Analyzer 🎯</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-brain"></i>
+                    <h1>Smart Task Analyzer</h1>
+                </div>
+                <p class="tagline">AI-Powered Task Prioritization</p>
+            </div>
+        </header>
+
+        <div class="main-layout">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="sidebar-section">
+                    <h3><i class="fas fa-sliders-h"></i> Quick Actions</h3>
+                    <button class="sidebar-btn" onclick="loadSampleTasks()">
+                        <i class="fas fa-magic"></i> Load Sample Tasks
+                    </button>
+                    <button class="sidebar-btn" onclick="clearAllTasks()">
+                        <i class="fas fa-trash"></i> Clear All
+                    </button>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3><i class="fas fa-chart-line"></i> Statistics</h3>
+                    <div class="stats">
+                        <div class="stat-item">
+                            <span class="stat-label">Total Tasks</span>
+                            <span class="stat-value" id="total-tasks">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">High Priority</span>
+                            <span class="stat-value" id="high-priority">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Due This Week</span>
+                            <span class="stat-value" id="due-soon">0</span>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="main-content">
+                <!-- Input Section -->
+                <section class="card input-section">
+                    <div class="card-header">
+                        <i class="fas fa-tasks"></i>
+                        <h2>Task Management</h2>
+                    </div>
+                    
+                    <div class="tabs">
+                        <button class="tab-btn active" onclick="switchTab('single-tab')">Single Task</button>
+                        <button class="tab-btn" onclick="switchTab('bulk-tab')">Bulk Import</button>
+                    </div>
+
+                    <!-- Single Task Form -->
+                    <div id="single-tab" class="tab-content active">
+                        <form id="task-form" class="task-form">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="title"><i class="fas fa-heading"></i> Task Title</label>
+                                    <input type="text" id="title" placeholder="What needs to be done?" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="due-date"><i class="fas fa-calendar-day"></i> Due Date</label>
+                                    <input type="date" id="due-date" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="estimated-hours"><i class="fas fa-clock"></i> Estimated Hours</label>
+                                    <input type="number" id="estimated-hours" placeholder="e.g., 2" min="1" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="importance"><i class="fas fa-star"></i> Importance (1-10)</label>
+                                    <div class="importance-slider">
+                                        <input type="range" id="importance" min="1" max="10" value="5">
+                                        <div class="slider-labels">
+                                            <span>Low</span>
+                                            <span id="importance-value">5</span>
+                                            <span>High</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="dependencies"><i class="fas fa-link"></i> Dependencies</label>
+                                    <input type="text" id="dependencies" placeholder="Task numbers (e.g., 1, 3)">
+                                    <small>Comma-separated task numbers this task depends on</small>
+                                </div>
+                            </div>
+                            
+                            <button type="submit" class="btn-primary">
+                                <i class="fas fa-plus"></i> Add Task
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Bulk Import Tab -->
+                    <div id="bulk-tab" class="tab-content">
+                        <div class="form-group">
+                            <label><i class="fas fa-code"></i> JSON Input</label>
+                            <textarea id="json-input" placeholder='[
+  {
+    "title": "Fix login bug",
+    "due_date": "2025-11-20",
+    "estimated_hours": 3,
+    "importance": 8,
+    "dependencies": []
+  }
+]'></textarea>
+                            <small>Paste JSON array of tasks</small>
+                        </div>
+                        <button onclick="importBulkTasks()" class="btn-secondary">
+                            <i class="fas fa-file-import"></i> Import Tasks
+                        </button>
+                    </div>
+
+                    <!-- Current Tasks -->
+                    <div class="current-tasks">
+                        <h3><i class="fas fa-list-ul"></i> Current Tasks <span class="badge" id="task-count">0</span></h3>
+                        <div id="current-tasks" class="tasks-list"></div>
+                    </div>
+                </section>
+
+                <!-- Strategy & Analysis Section -->
+                <section class="card analysis-section">
+                    <div class="card-header">
+                        <i class="fas fa-chess-queen"></i>
+                        <h2>Smart Analysis</h2>
+                    </div>
+
+                    <div class="strategy-selector">
+                        <label><i class="fas fa-cog"></i> Analysis Strategy</label>
+                        <div class="strategy-cards">
+                            <div class="strategy-card" data-strategy="smart_balance">
+                                <i class="fas fa-balance-scale"></i>
+                                <h4>Smart Balance</h4>
+                                <p>Balanced approach considering all factors</p>
+                            </div>
+                            <div class="strategy-card" data-strategy="fastest_wins">
+                                <i class="fas fa-bolt"></i>
+                                <h4>Fastest Wins</h4>
+                                <p>Prioritize quick tasks</p>
+                            </div>
+                            <div class="strategy-card" data-strategy="high_impact">
+                                <i class="fas fa-chart-line"></i>
+                                <h4>High Impact</h4>
+                                <p>Focus on importance</p>
+                            </div>
+                            <div class="strategy-card" data-strategy="deadline_driven">
+                                <i class="fas fa-clock"></i>
+                                <h4>Deadline Driven</h4>
+                                <p>Urgency first approach</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="analysis-actions">
+                        <button onclick="analyzeTasks()" class="btn-analyze">
+                            <i class="fas fa-rocket"></i> Analyze Tasks
+                        </button>
+                        <button onclick="getSuggestions()" class="btn-suggest">
+                            <i class="fas fa-lightbulb"></i> Get Smart Suggestions
+                        </button>
+                    </div>
+                </section>
+
+                <!-- Results Section -->
+                <section class="card results-section">
+                    <div class="card-header">
+                        <i class="fas fa-chart-bar"></i>
+                        <h2>Analysis Results</h2>
+                        <div class="strategy-badge" id="current-strategy">Smart Balance</div>
+                    </div>
+
+                    <div id="loading" class="loading-state hidden">
+                        <div class="loading-spinner"></div>
+                        <p>Analyzing your tasks with AI...</p>
+                    </div>
+
+                    <div id="error-message" class="error-state hidden"></div>
+
+                    <div id="results" class="results-container">
+                        <div class="empty-state">
+                            <i class="fas fa-search"></i>
+                            <h3>No Analysis Yet</h3>
+                            <p>Add some tasks and click "Analyze Tasks" to see prioritized results</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Suggestions Section -->
+                <section class="card suggestions-section">
+                    <div class="card-header">
+                        <i class="fas fa-gem"></i>
+                        <h2>Top Recommendations</h2>
+                    </div>
+
+                    <div id="suggestions-loading" class="loading-state hidden">
+                        <div class="loading-spinner"></div>
+                        <p>Generating smart recommendations...</p>
+                    </div>
+
+                    <div id="suggestions" class="suggestions-container">
+                        <div class="empty-state">
+                            <i class="fas fa-lightbulb"></i>
+                            <h3>No Suggestions Yet</h3>
+                            <p>Click "Get Smart Suggestions" for AI-powered recommendations</p>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
