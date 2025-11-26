@@ -1,61 +1,92 @@
-# Smart Task Analyzer
+# 🎯 Smart Task Analyzer
 
-## Setup Instructions
+**AI-Powered Task Prioritization System** - A Django-based web application that intelligently scores and prioritizes tasks using multiple factors including urgency, importance, effort, and dependencies.
 
-### Prerequisites
-- Python 3.8+
-- Django 4.0+
+## 🚀 Features
 
-### Installation
-1. Clone the repository
-2. Install dependencies: `pip install -r requirements.txt`
-3. Navigate to backend directory: `cd backend`
-4. Run migrations: `python manage.py migrate`
-5. Start development server: `python manage.py runserver`
-6. Open `frontend/index.html` in your web browser
+### 🤖 Smart Priority Algorithm
+- **Multi-factor scoring** considering urgency, importance, effort, and dependencies
+- **4 Analysis Strategies**: Smart Balance, Fastest Wins, High Impact, Deadline Driven
+- **Configurable weights** for different prioritization approaches
+- **Circular dependency detection** to prevent logical errors
 
-### API Endpoints
-- `POST /api/tasks/analyze/` - Analyze and prioritize tasks
-- `GET /api/tasks/suggest/` - Get top 3 task suggestions
+### 💻 Modern Tech Stack
+- **Backend**: Django REST API with Python
+- **Frontend**: Vanilla JavaScript with modern CSS3
+- **Database**: SQLite (production-ready PostgreSQL compatible)
+- **UI/UX**: Glass morphism design with responsive layout
 
-## Algorithm Explanation
+### 🎨 User Experience
+- **Real-time task analysis** with visual priority indicators
+- **Bulk JSON import** for quick task management
+- **Interactive strategy selection** with visual cards
+- **Smart suggestions** for top 3 tasks to focus on
+- **Live statistics** and progress tracking
 
-The priority scoring algorithm uses a weighted approach considering four key factors:
+## 📋 Assignment Requirements Fulfilled
 
-1. **Urgency (40% weight)**: Based on due date proximity. Tasks due sooner get higher scores. Past-due tasks receive penalty scores.
+✅ **Backend Development** (Django/Python)
+- Task model with all required fields
+- Priority scoring algorithm with multiple factors
+- API endpoints: `/api/tasks/analyze/` and `/api/tasks/suggest/`
+- Comprehensive error handling and validation
 
-2. **Importance (30% weight)**: Direct user-provided importance rating (1-10 scale).
+✅ **Frontend Development** (HTML/CSS/JavaScript)
+- Modern, responsive user interface
+- Multiple sorting strategy toggle
+- Form validation and error handling
+- Real-time API integration
 
-3. **Effort (20% weight)**: Lower effort tasks get slightly higher scores for "quick wins".
+✅ **Bonus Features**
+- Circular dependency detection
+- Professional UI/UX design
+- Comprehensive unit tests
+- Detailed documentation
 
-4. **Dependencies (10% weight)**: Tasks that block other tasks receive bonus points.
+## 🛠️ Quick Start
 
-The algorithm normalizes each factor to a 0-100 scale and applies configurable weights. Different sorting strategies adjust these weights:
+```bash
+# Clone repository
+git clone https://github.com/yourusername/task-analyzer.git
+cd task-analyzer
 
-- **Smart Balance**: Balanced weights as above
-- **Fastest Wins**: Effort weight increased to 50%
-- **High Impact**: Importance weight increased to 60%
-- **Deadline Driven**: Urgency weight increased to 70%
+# Install dependencies
+pip install -r requirements.txt
 
-## Design Decisions
+# Setup backend
+cd backend
+python manage.py migrate
+python manage.py runserver
 
-1. **Used SQLite**: For simplicity in this assessment
-2. **No authentication**: As specified in requirements
-3. **Simple frontend**: Vanilla JS to demonstrate core functionality
-4. **Weight-based algorithm**: Flexible and configurable approach
-5. **JSON dependencies**: Simple list storage for task dependencies
+# Open frontend (in new terminal)
+cd ../frontend
+python -m http.server 3000
+Visit http://localhost:3000 to use the application!
 
-## Time Breakdown
+📁 Project Structure
+text
+task-analyzer/
+├── backend/                 # Django backend
+│   ├── tasks/              # Main application
+│   │   ├── scoring.py      # Core priority algorithm
+│   │   ├── views.py        # API endpoints
+│   │   └── tests.py        # Unit tests
+│   └── requirements.txt    # Python dependencies
+├── frontend/               # Static frontend
+│   ├── index.html         # Main interface
+│   ├── styles.css         # Modern CSS design
+│   └── script.js          # Frontend logic
+└── README.md              # Comprehensive documentation
+🎯 Algorithm Details
+The priority scoring uses a weighted approach:
 
-- Backend setup & algorithm: 2 hours
-- Frontend development: 1.5 hours
-- Testing & documentation: 0.5 hours
-- **Total**: 4 hours
+Urgency (40%): Due date proximity with past-due penalties
 
-## Future Improvements
+Importance (30%): User-provided 1-10 scale
 
-- User preferences for custom weighting
-- Advanced date intelligence (weekends, holidays)
-- Dependency visualization
-- Task categories and tags
-- Persistence with user accounts
+Effort (20%): Lower effort tasks for quick wins
+
+Dependencies (10%): Tasks blocking others get priority
+
+👨‍💻 Developer
+Madhav Kishor
